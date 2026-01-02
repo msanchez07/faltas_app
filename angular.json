@@ -25,16 +25,18 @@
               }
             ],
             "styles": [
-              "src/styles.css"
-            ]
+              "src/styles.scss"
+            ],
+            "baseHref": "./",
+            "outputPath": "dist/faltas-app"
           },
           "configurations": {
             "production": {
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "2 MB",
+                  "maximumError": "2 MB"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -82,7 +84,7 @@
               }
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.scss"
             ]
           }
         }

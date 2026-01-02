@@ -1,0 +1,129 @@
+<div class="mt-3 mr-4 ml-4">
+    
+    <p-panel [toggleable]="true">
+        <ng-template #header>
+            <div class="flex items-center gap-2">        
+                <span class="font-bold">Datos del informe</span>
+            </div>
+        </ng-template>
+        <div class="grid align-items-stretch h-4rem">
+        
+            <div class="col-12 md:col-6 h-full">
+                <p-select   
+                    [options]="cycles"  
+                    optionLabel="name" 
+                    placeholder="Selecciona un curso" 
+                    styleClass="w-full h-full flex align-items-center"
+                    (onChange)="onCycleSelected($event)"  
+                    [style]="{'width': '100%', 'display': 'flex', 'align-items': 'center'}" />
+            </div>
+
+            <div class="col-12 md:col-6 h-full">
+                
+                <div class="w-full h-full flex align-items-center justify-content-between border-1 surface-border border-round bg-white overflow-hidden">
+                    
+                    <span class="pl-3 text-700 white-space-nowrap overflow-hidden text-overflow-ellipsis flex-1 mr-2 cursor-pointer" 
+                        (click)="fileInput.click()">
+                        
+                        @if (fileName) {
+                            <div class="flex align-items-center">
+                                <i class="pi pi-file-pdf text-red-500 mr-2 text-xl"></i> 
+                                <span class="font-medium">{{ fileName }}</span>
+                            </div>
+                        } @else {
+                            <span class="text-500 font-italic">Selecciona un PDF...</span>
+                        }
+                    </span>
+
+                    <div class="h-full">
+                        <input 
+                            #fileInput 
+                            type="file" 
+                            accept=".pdf" 
+                            (change)="onFileSelected($event)" 
+                            style="display: none">
+
+                        <p-button 
+                            label="Seleccionar" 
+                            icon="pi pi-upload" 
+                            styleClass="h-full border-noround border-none border-round-right-none px-4"
+                            (click)="fileInput.click()">
+                        </p-button>
+                    </div>
+
+                </div>
+
+            </div>
+            
+        </div>
+
+        <ng-template #icons>
+            <p-button icon="pi pi-database" severity="secondary" rounded text  placeholder="Left" tooltipPosition="left" pTooltip="Importar datos"/>
+            <p-button icon="pi pi-cog" severity="secondary" rounded text  placeholder="Left" tooltipPosition="left" pTooltip="Configurar informe"/>
+        </ng-template>
+
+
+    </p-panel>
+
+    <p-panel class="mt-3">
+
+        <p-table
+            [value]="data"
+            showGridlines
+            [rowHover]="true"
+            [tableStyle]="{ 'min-width': '50rem' }">
+
+            <!-- HEADER -->
+            <ng-template pTemplate="header">
+                <tr>                    
+                    @for (col of columns; track col) {
+                        @if (!getColsAreSpan().includes(col)) {
+                            <th>{{ col }}</th>
+                        } @else {
+                            <th class="text-center" colspan="2">{{ col }}</th>
+                        }
+                    }
+                </tr>
+            </ng-template>
+
+            <!-- BODY -->
+            <ng-template pTemplate="body" let-dd>
+                <tr [class]="getSeverityClass(dd.total)"> <!-- clase por fila (opcional) -->
+
+                    <td>{{ dd.name }}</td>
+
+                    @for (col of columns; track col) {
+                        @if (getColsAreSpan().includes(col)) {
+
+                            <td [class]="getSeverityClass(dd['p_' + col])">
+                                {{ dd[col] }}
+                            </td>
+
+                            <td [class]="getSeverityClass(dd['p_' + col])">
+                                {{ dd['p_' + col] }}%
+                            </td>
+
+                        }
+                        
+                    }
+                    <td styleClass="cursor-pointer">
+                        <p-button icon="pi pi-file-export" 
+                                  [rounded]="true" 
+                                  [text]="true"  
+                                  placeholder="Top" tooltipPosition="top" pTooltip="Exportar {{dd.name}}"
+                                  (click)="copyRowAsHtml(dd)"
+                                   />
+                    </td>
+
+                </tr>
+            </ng-template>
+
+        </p-table>
+
+
+
+    </p-panel>
+
+    
+        
+</div>

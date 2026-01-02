@@ -1,12 +1,15 @@
 {
   "name": "faltas-app",
   "version": "0.0.0",
+  "main": "main.js",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "postinstall": "electron-rebuild",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "electron": "npm run build && electron ."
   },
   "prettier": {
     "printWidth": 100,
@@ -28,6 +31,12 @@
     "@angular/forms": "^20.1.0",
     "@angular/platform-browser": "^20.1.0",
     "@angular/router": "^20.1.0",
+    "@primeuix/themes": "^2.0.2",
+    "better-sqlite3": "^12.5.0",
+    "pdfjs-dist": "5.4.149",
+    "primeflex": "^4.0.0",
+    "primeicons": "^7.0.0",
+    "primeng": "^20.4.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
@@ -36,7 +45,11 @@
     "@angular/build": "^20.1.6",
     "@angular/cli": "^20.1.6",
     "@angular/compiler-cli": "^20.1.0",
+    "@electron/rebuild": "^4.0.2",
     "@types/jasmine": "~5.1.0",
+    "electron": "^39.2.5",
+    "electron-devtools-installer": "^4.0.0",
+    "electron-rebuild": "^3.2.9",
     "jasmine-core": "~5.8.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
