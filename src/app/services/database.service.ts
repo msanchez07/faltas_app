@@ -7,29 +7,45 @@ export class DatabaseService {
 
   constructor() { }
 
-  // Angular usa Promesas aquí porque la comunicación IPC es asíncrona
+  /**
+   * Obtiene la lista de ciclos (que ahora incluye el año en el nombre)
+   */
   async getCycles(): Promise<any[]> {
-    if (window.dbApi) {
-      return await window.dbApi.getCycles();
+    if ((window as any).dbApi) {
+      return await (window as any).dbApi.getCycles();
     } else {
-      console.error('Electron API no encontrada (¿Estás en el navegador web?)');
+      this.handleError();
       return [];
     }
   }
 
-  async getModules(cicle_year_id: number): Promise<any[]> {
-      if (window.dbApi) {
-        return await window.dbApi.getModules(cicle_year_id);
-      } else {
-        console.error('Electron API no encontrada (¿Estás en el navegador web?)');
-        return [];
-      }
+  /**
+   * Obtiene los módulos de un ciclo específico.
+   * Nota: Ahora usamos 'cycleId' ya que la tabla cycle_years desapareció.
+   */
+  async getModules(cycleId: number): Promise<any[]> {
+    if ((window as any).dbApi) {
+      return await (window as any).dbApi.getModules(cycleId);
+    } else {
+      this.handleError();
+      return [];
+    }
   }
 
-  /*async crearUsuario(nombre: string, email: string): Promise<number> {
-    if (window.dbApi) {
-      return await window.dbApi.addUsuario(nombre, email);
+  /**
+   * Importa la estructura jerárquica TreeNode (Ciclos -> Módulos)
+   * directamente a la base de datos SQLite en Electron.
+   */
+  async importHierarchy(treeData: any[]): Promise<{ success: boolean, error?: string }> {
+    if ((window as any).dbApi) {
+      return await (window as any).dbApi.importCyclesJson(treeData);
+    } else {
+      this.handleError();
+      return { success: false, error: 'Electron API no disponible' };
     }
-    return -1;
-  }*/
+  }
+
+  private handleError() {
+    console.error('Electron API (dbApi) no encontrada. Asegúrate de estar ejecutando la app dentro de Electron.');
+  }
 }

@@ -1,0 +1,56 @@
+<div class="mt-3 mr-4 ml-4">
+    <p-panel>
+        <ng-template #header>
+            <div class="flex items-center gap-2"> 
+                <p-button 
+                    icon="pi pi-arrow-left" 
+                    [rounded]="true" 
+                    [text]="true" 
+                    (click)="navigator.back()" 
+                    pTooltip="Volver"
+                    tooltipPosition="bottom"/>
+                <span class="font-bold" style="margin-top: 15px">{{ isEditMode ? 'Editar Ciclo' : 'Nuevo Ciclo' }}</span>
+            </div>
+        </ng-template>
+
+        <div class="grid">
+            
+            <div class="col-6 col-offset-3">
+                <label for="name" class="font-semibold ">Nombre del Ciclo</label>
+                <input pInputText id="name" [(ngModel)]="cycleName" placeholder="Ej: Sistemas Microinformáticos y Redes" class="w-full" />
+            </div>
+
+            <div class="col-6 col-offset-3">
+                <label for="year" class="font-semibold ">Curso</label>
+                <p-select 
+                    id="year"
+                    [options]="years" 
+                    [(ngModel)]="selectedYear" 
+                    optionLabel="label" 
+                    placeholder="Selecciona el curso" 
+                    styleClass="w-full" />
+            </div>
+
+            <div class="col-3 col-offset-3">
+                <p-button 
+                    label="Guardar Ciclo" 
+                    icon="pi pi-check" 
+                    (click)="save()" 
+                    [disabled]="!cycleName || !selectedYear" 
+                    styleClass="w-full" />
+                
+            </div>
+            <div class="col-3 ">
+                
+                <p-button 
+                    label="Cancelar" 
+                    icon="pi pi-times" 
+                    severity="secondary" 
+                    (click)="navigator.back()" 
+                    styleClass="w-full" />
+            </div>
+
+        </div>
+        
+    </p-panel>
+</div>

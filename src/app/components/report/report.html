@@ -14,7 +14,8 @@
                     optionLabel="name" 
                     placeholder="Selecciona un curso" 
                     styleClass="w-full h-full flex align-items-center"
-                    (onChange)="onCycleSelected($event)"  
+                    (onChange)="onCycleSelected($event)"
+                    [disabled]="disableSelectCycles()"  
                     [style]="{'width': '100%', 'display': 'flex', 'align-items': 'center'}" />
             </div>
 
@@ -58,7 +59,13 @@
         </div>
 
         <ng-template #icons>
-            <p-button icon="pi pi-database" severity="secondary" rounded text  placeholder="Left" tooltipPosition="left" pTooltip="Importar datos"/>
+            <p-button icon="pi pi-database" 
+                      severity="secondary" 
+                      rounded text  
+                      placeholder="Left" 
+                      tooltipPosition="left" 
+                      pTooltip="Importar datos"
+                      (click)="navigateToDatabase()"/>
             <p-button icon="pi pi-cog" severity="secondary" rounded text  placeholder="Left" tooltipPosition="left" pTooltip="Configurar informe"/>
         </ng-template>
 

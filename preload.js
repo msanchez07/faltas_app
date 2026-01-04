@@ -4,8 +4,8 @@ contextBridge.exposeInMainWorld('dbApi', {
   // Función para pedir usuarios
   getCycles: () => ipcRenderer.invoke('get-cycles'),
 
-  getModules: (cicle_year_id) => ipcRenderer.invoke('get-modules', { cicle_year_id}),
+  getModules: (cycleId) => ipcRenderer.invoke('get-modules', cycleId),
   
-  // Función para guardar usuario
-  //addUsuario: (nombre, email) => ipcRenderer.invoke('add-usuario', { nombre, email })
+  importCyclesJson: (treeData) => ipcRenderer.invoke('import-cycles-json', treeData),
+
 });

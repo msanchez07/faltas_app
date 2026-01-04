@@ -10,6 +10,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { FormsModule } from '@angular/forms';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { TooltipModule } from 'primeng/tooltip';
+import { NavigatorService } from '../../services/navigation.service';
+
 
 interface Cycle {
     name: String;
@@ -26,7 +28,7 @@ interface Cycle {
 
 
 export class ReportComponent {
-    cycles: Cycle[] | undefined;
+    cycles: Cycle[] = [];
     modules: any[] = []
     data: any = []
     columns: any = []
@@ -41,7 +43,7 @@ export class ReportComponent {
         'bg-green-100':  { background: '#bbf7d0', color: '#166534' }
     };
 
-    constructor(private database: DatabaseService, private pdfReader: PdfReaderService){}
+    constructor(private database: DatabaseService, private pdfReader: PdfReaderService, private navigator: NavigatorService){}
 
     onFileSelected(event: any) {
         const file: File = event.target.files[0];
@@ -73,16 +75,15 @@ export class ReportComponent {
         this.loadCycles();
     }
 
+    disableSelectCycles(){
+        return this.cycles!.length == 0;
+    }
+
     async loadCycles() {
         try {
-            // 1. AWAIT: "Espera aquí hasta que la base de datos responda"
-            // 'rawData' ya será el array real (ej: ['DAM', 'DAW', 'ASIR'])
             //const rawData = await this.database.getCycles();
             const rawData = this.fakeCycles();
 
-
-            // 2. Ahora que ya tenemos los datos, los transformamos (Mapeo)
-            // Esto convierte el array de strings en el formato que quiere PrimeNG {name, code}
             this.cycles = rawData.map(cycle => ({
                 name: cycle.name, // o cycle.nombre si viene como objeto
                 year_id: cycle.code  // o cycle.id si viene como objeto
@@ -255,6 +256,12 @@ export class ReportComponent {
         tmp.innerHTML = html;
         return tmp.innerText || tmp.textContent || '';
     }
+
+    navigateToDatabase(){
+        this.navigator.navigateDatabase();
+    }
+
+
 
     fakeData(){
         return [
