@@ -24,11 +24,7 @@ npm run build
 # Usamos la variable de entorno para ignorar dependencias faltantes
 export ELECTRON_BUILDER_ALLOW_MISSING_DEPENDENCIES=true
 
-echo "🍎 Generando para macOS..."
-npx electron-builder --mac --x64 -c.npmRebuild=false
 
-echo "🪟 Generando para Windows..."
-npx electron-builder --win --x64 -c.npmRebuild=false
 
 echo "🐧 Generando para Linux..."
 npx electron-builder --linux --x64 -c.npmRebuild=false

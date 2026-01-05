@@ -2,6 +2,7 @@
   "name": "faltas-app",
   "version": "1.0.0",
   "main": "main.js",
+  "productName": "Informe de faltas",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -39,15 +40,16 @@
     ],
     "win": {
       "target": ["portable"],
-      "icon": "dist/faltas-app/browser/favicon.ico"
+      "icon": "public/favicon.png"
     },
     "linux": {
       "target": ["AppImage"],
-      "icon": "public/icon.png"
+      "icon": "public/favicon.png",
+      "executableArgs": ["--no-sandbox"]
     },
     "mac": {
       "target": ["zip"],
-      "icon": "dist/faltas-app/browser/icon.icns"
+      "icon": "public/favicon.png"
       
     }
   },
