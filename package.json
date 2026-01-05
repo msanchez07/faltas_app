@@ -1,15 +1,55 @@
 {
   "name": "faltas-app",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "main": "main.js",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
-    "postinstall": "electron-rebuild",
+    "build": "ng build --configuration production",
+    "postinstall": "electron-builder install-app-deps",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "electron": "npm run build && electron ."
+    "electron": "npm run build && electron .",
+    "package": "electron-builder -c.npmRebuild=false",
+
+    "build:linux": "npm run build && electron-builder --linux --x64 -c.npmRebuild=false",
+    "build:win": "npm run build && electron-builder --win --x64 -c.npmRebuild=false",
+    "build:mac": "npm run build && electron-builder --mac --x64 -c.npmRebuild=false",
+    "build:all": "npm run build && electron-builder --win --linux --mac -c.npmRebuild=false"
+  },
+  "build": {
+    "appId": "com.tuusuario.faltasapp",
+    "productName": "Gestor de Faltas",
+    "asar": true,
+    "asarUnpack": [
+      "**/node_modules/better-sqlite3/**/*"
+    ],
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "main.js",
+      "preload.js",
+      "database/**/*",
+      "node_modules/**/*",
+      "!node_modules/@napi-rs/canvas-android-**",
+      "!node_modules/@napi-rs/canvas-darwin-**",
+      "!node_modules/@napi-rs/canvas-win32-**"
+    ],
+    "win": {
+      "target": ["portable"],
+      "icon": "dist/faltas-app/browser/favicon.ico"
+    },
+    "linux": {
+      "target": ["AppImage"],
+      "icon": "public/icon.png"
+    },
+    "mac": {
+      "target": ["zip"],
+      "icon": "dist/faltas-app/browser/icon.icns"
+      
+    }
   },
   "prettier": {
     "printWidth": 100,
@@ -33,6 +73,8 @@
     "@angular/router": "^20.1.0",
     "@primeuix/themes": "^2.0.2",
     "better-sqlite3": "^12.5.0",
+    "jspdf": "^4.0.0",
+    "jspdf-autotable": "^5.0.7",
     "pdfjs-dist": "5.4.149",
     "primeflex": "^4.0.0",
     "primeicons": "^7.0.0",
@@ -48,6 +90,7 @@
     "@electron/rebuild": "^4.0.2",
     "@types/jasmine": "~5.1.0",
     "electron": "^39.2.5",
+    "electron-builder": "^26.0.12",
     "electron-devtools-installer": "^4.0.0",
     "electron-rebuild": "^3.2.9",
     "jasmine-core": "~5.8.0",

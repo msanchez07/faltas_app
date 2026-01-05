@@ -14,7 +14,7 @@ export class PdfReaderService {
       (pdfjsLib as any).GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/5.4.149/pdf.worker.min.mjs';
     }
 
-    async getLinesFromPdfPage(pdfFile: File, pageNumber: number): Promise<any[]> {
+    async getLinesFromPdfPage(pdfFile: File, pageNumber: number, justify: boolean): Promise<any[]> {
         const arrayBuffer = await pdfFile.arrayBuffer();
         const typedArray = new Uint8Array(arrayBuffer);
 
@@ -27,7 +27,7 @@ export class PdfReaderService {
         const page = await pdf.getPage(pageNumber);
         const content = await page.getTextContent();
         const items = content.items;
-        const modules = this.getModules(items);
+        const modules = this.getModules(items, justify);
         const students = this.getStudents(items);
         const table = this.getData(modules, students, items);
         return table;
@@ -75,7 +75,7 @@ export class PdfReaderService {
         return position;
     }
 
-    private getModules(items: any){
+    private getModules(items: any, justify: boolean){
         let modules: any = {};
 
         const startPosition = this.getStartPosition(items as [any]);
@@ -85,7 +85,8 @@ export class PdfReaderService {
             const item = items[i];
             if('str' in item && item.str.length >= 3){
                 modules[(items[i+4] as any).transform[5]] = item.str;
-                modules[(items[i+6] as any).transform[5]] = item.str;                  
+                if(justify)
+                    modules[(items[i+6] as any).transform[5]] = item.str;                  
             } 
             
         }
@@ -133,7 +134,6 @@ export class PdfReaderService {
                     for(let j = 0; j<table.length; j++){
                         if(table[j].name === student){
                             table[j][module] += num;
-                        
                         }
                     }
                 }

@@ -24,6 +24,18 @@ export class NavigatorService {
         this.router.navigate(['ciclos/editar', id]);
     }
 
+    navigateNewModule(cycleId: number) {
+        this.router.navigate(['modulos/nuevo', cycleId]);
+    }
+
+    navigateEditModule(moduleId: number) {
+        this.router.navigate(['modulos/editar', moduleId]);
+    }
+
+    navigateSettings() {
+        this.router.navigate(['/settings']);
+    }
+
     back(){
         this.location.back();
     }

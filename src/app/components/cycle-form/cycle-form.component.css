@@ -1,0 +1,15 @@
+/* Esto asegura que el contenido interno del panel crezca para llenar el espacio */
+:host ::ng-deep .p-panel {
+    display: flex;
+    flex-direction: column;
+}
+
+:host ::ng-deep .p-panel-content {
+    flex-grow: 1; /* Esto obliga al contenido a expandirse */
+    display: flex;
+    flex-direction: column;
+}
+
+:host ::ng-deep .grid {
+    margin: 0; /* Evita scrolls innecesarios por márgenes negativos del grid */
+}

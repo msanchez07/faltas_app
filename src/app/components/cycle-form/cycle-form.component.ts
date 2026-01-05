@@ -10,8 +10,9 @@ import { ButtonModule } from 'primeng/button';
 import { PanelModule } from 'primeng/panel';
 import { TooltipModule } from 'primeng/tooltip';
 
-// Servicio
+// Servicios
 import { NavigatorService } from '../../services/navigation.service';
+import { DatabaseService } from '../../services/database.service';
 
 @Component({
   selector: 'app-cycle-form',
@@ -26,6 +27,7 @@ import { NavigatorService } from '../../services/navigation.service';
     TooltipModule
   ],
   templateUrl: './cycle-form.component.html',
+  styleUrls: ['./cycle-form.component.css']
 })
 export class CycleFormComponent implements OnInit {
   cycleId: number | null = null;
@@ -33,24 +35,16 @@ export class CycleFormComponent implements OnInit {
   selectedYear: any = null;
   isEditMode: boolean = false;
 
-  // Opciones para el select (usamos labels en minúsculas para facilitar la concatenación)
   years = [
     { label: 'primero', value: 'primero' },
     { label: 'segundo', value: 'segundo' },
     { label: 'Curso de especialización', value: 'especializacion' }
   ];
 
-  private fakeDatabase = [
-    {"id":1,"name":"SMR primero"},
-    {"id":2,"name":"SMR segundo"},
-    {"id":3,"name":"DAM primero"},
-    {"id":4,"name":"DAM segundo"},
-    {"id":9,"name":"Inteligencia Artificial y Big Data"}
-  ];
-
   constructor(
     private route: ActivatedRoute,
-    public navigator: NavigatorService
+    public navigator: NavigatorService,
+    private dbService: DatabaseService // Inyectamos el servicio
   ) {}
 
   ngOnInit() {
@@ -62,13 +56,18 @@ export class CycleFormComponent implements OnInit {
     }
   }
 
-  loadData(id: number) {
-    const item = this.fakeDatabase.find(c => c.id === id);
+  async loadData(id: number) {
+    // Obtenemos todos los ciclos de la DB
+    const cycles = await this.dbService.getCycles();
+    // Buscamos el que corresponde al ID (nota: en tu getCycles el id viene como 'code')
+    const item = cycles.find(c => c.code === id);
+
     if (item) {
-      if (item.name.endsWith('primero')) {
+      // Aplicamos la lógica para separar el nombre del curso
+      if (item.name.endsWith(' primero')) {
         this.cycleName = item.name.replace(' primero', '');
         this.selectedYear = this.years[0];
-      } else if (item.name.endsWith('segundo')) {
+      } else if (item.name.endsWith(' segundo')) {
         this.cycleName = item.name.replace(' segundo', '');
         this.selectedYear = this.years[1];
       } else {
@@ -78,22 +77,25 @@ export class CycleFormComponent implements OnInit {
     }
   }
 
-  save() {
+  async save() {
     if (!this.cycleName || !this.selectedYear) return;
 
-    // LÓGICA DE CONCATENACIÓN SOLICITADA
     let finalName = '';
     
     if (this.selectedYear.value === 'especializacion') {
-      // Si es curso de especialización, no se añade nada
       finalName = this.cycleName.trim();
     } else {
-      // Si es primero o segundo, se añade el label en minúsculas
-      // Usamos el valor del label que ya está en minúsculas
       finalName = `${this.cycleName.trim()} ${this.selectedYear.label}`;
     }
     
-
-    this.navigator.back();
+    // Llamada real al servicio
+    const res = await this.dbService.saveCycle(finalName, this.cycleId);
+    
+    if (res.success) {
+      this.navigator.back();
+    } else {
+      console.error('Error al guardar el ciclo');
+    }
   }
+
 }

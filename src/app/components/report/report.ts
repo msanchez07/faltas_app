@@ -11,11 +11,12 @@ import { FormsModule } from '@angular/forms';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { TooltipModule } from 'primeng/tooltip';
 import { NavigatorService } from '../../services/navigation.service';
-
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 interface Cycle {
     name: String;
-    year_id: number;
+    id: number;
     
 }
 
@@ -35,6 +36,9 @@ export class ReportComponent {
     fileName: string = '';
     selectedFile: File | null = null;
     percent_absences: number = 15;
+    justify = false;
+    selectedCycle : Cycle | null = null;
+
 
     private colorMap: { [key: string]: { background: string; color: string } } = {
         'bg-red-100':    { background: '#fecaca', color: '#991b1b' },
@@ -43,7 +47,7 @@ export class ReportComponent {
         'bg-green-100':  { background: '#bbf7d0', color: '#166534' }
     };
 
-    constructor(private database: DatabaseService, private pdfReader: PdfReaderService, private navigator: NavigatorService){}
+    constructor(private database: DatabaseService, private pdfReader: PdfReaderService, public navigator: NavigatorService){}
 
     onFileSelected(event: any) {
         const file: File = event.target.files[0];
@@ -62,10 +66,10 @@ export class ReportComponent {
 
     onCycleSelected(event: any) {
         // El objeto seleccionado está en event.value
-        const cycle = event.value;
+        this.selectedCycle = event.value;
         
-        if (cycle && cycle.year_id) {            
-            this.loadModules(cycle.year_id);
+        if (this.selectedCycle && this.selectedCycle.id) {            
+            this.loadModules(this.selectedCycle.id);
         }
 
         
@@ -73,6 +77,13 @@ export class ReportComponent {
 
     ngOnInit() {
         this.loadCycles();
+        this.loadSettings();
+    }
+
+    async loadSettings(){
+        const config = await this.database.getSettings();
+        this.percent_absences = config.absencesLimit;
+        this.justify = config.includeJustified;
     }
 
     disableSelectCycles(){
@@ -81,12 +92,11 @@ export class ReportComponent {
 
     async loadCycles() {
         try {
-            //const rawData = await this.database.getCycles();
-            const rawData = this.fakeCycles();
+            const rawData = await this.database.getCycles();
 
             this.cycles = rawData.map(cycle => ({
                 name: cycle.name, // o cycle.nombre si viene como objeto
-                year_id: cycle.code  // o cycle.id si viene como objeto
+                id: cycle.code  // o cycle.id si viene como objeto
             }));
             console.log(rawData);
 
@@ -95,10 +105,9 @@ export class ReportComponent {
         }
     }
 
-    async loadModules(cicle_year_id: number){
+    async loadModules(cicle_id: number){
         try{
-            //const rawData = await this.database.getModules(cicle_year_id);
-            const rawData = this.fakeData();
+            const rawData = await this.database.getModules(cicle_id);
             this.modules = rawData;
             if(this.selectedFile)
                 this.generateTable();
@@ -109,7 +118,7 @@ export class ReportComponent {
     }
 
     async generateTable() {
-        this.data = await this.pdfReader.getLinesFromPdfPage(this.selectedFile!, 1);
+        this.data = await this.pdfReader.getLinesFromPdfPage(this.selectedFile!, 1, this.justify);
         //this.data = this.fakeData();
         this.columns = Object.keys(this.data[0]);
         this.columns[0] = "Alumno";
@@ -261,180 +270,89 @@ export class ReportComponent {
         this.navigator.navigateDatabase();
     }
 
+    exportToPdf() {
+        const doc = new jsPDF('l', 'mm', 'a4');
 
+        doc.setFontSize(16);
+        doc.text('Informe Detallado de Faltas', 14, 15);
+        doc.setFontSize(10);
+        doc.setTextColor(100);
+        doc.text(`Ciclo: ${this.selectedCycle!.name} | Porcentaje de faltas: ${this.percent_absences}% | Se cuentan las faltas justificadas: ${this.justify ? "Sí" : "No"}`, 14, 22);
 
-    fakeData(){
-        return [
-            {
-                "id": 61,
-                "is_active": 1,
-                "created_at": "2025-09-24 10:20:58",
-                "updated_at": "2025-09-24 10:20:58",
-                "name": "Programación",
-                "description": "Creación de algoritmos y programas con distintos lenguajes.",
-                "path": "prg_daw",
-                "image": null,
-                "has_content": 0,
-                "hours": 266,
-                "acronym": "PRG_DAW",
-                "cicle_year_id": 5,
-                "report_code": "PRO"
+        // 1. Definir las dos filas de la cabecera
+        // Fila 1: Alumno | Módulo 1 (ocupa 2 col) | Módulo 2 (ocupa 2 col) ...
+        const headerRow1: any[] = [{ content: 'Alumno', rowSpan: 2, styles: { halign: 'center', valign: 'middle' } }];
+        
+        // Fila 2: (Alumno está spanneado) | Total | % | Total | % ...
+        const headerRow2: any[] = [];
+
+        // 2. Definir las columnas de datos (DataKeys)
+        const dataKeys: string[] = ['Alumno'];
+
+        this.modules.forEach(m => {
+            // Añadimos a la fila superior el nombre del módulo ocupando 2 columnas
+            headerRow1.push({ 
+                content: m.report_code, 
+                colSpan: 2, 
+                styles: { halign: 'center' } 
+            });
+
+            // Añadimos a la fila inferior los subencabezados
+            headerRow2.push({ content: 'Total', styles: { halign: 'center' } });
+            headerRow2.push({ content: '%', styles: { halign: 'center' } });
+
+            // Registramos las claves de datos para mapear el body
+            dataKeys.push(m.report_code);
+            dataKeys.push(`p_${m.report_code}`);
+        });
+
+        // 3. Preparar el Body
+        const body = this.data.map((row: any) => {
+            // Mapeamos cada fila según el orden de dataKeys
+            return dataKeys.map(key => {
+                if (key === 'Alumno') return row['name'] || row[Object.keys(row)[0]];
+                if (key.startsWith('p_')) return `${row[key]}%`;
+                return row[key];
+            });
+        });
+
+        // 4. Generar la tabla
+        autoTable(doc, {
+            head: [headerRow1, headerRow2],
+            body: body,
+            startY: 30,
+            theme: 'grid',
+            styles: { fontSize: 7, cellPadding: 1.5, halign: 'center' },
+            headStyles: { fillColor: [51, 65, 85], textColor: 255 },
+            columnStyles: {
+                // EXCEPCIÓN: La columna 0 (Alumno) se alinea a la izquierda
+                0: { cellWidth: 40, fontStyle: 'bold', halign: 'left' } 
             },
-            {
-                "id": 62,
-                "is_active": 1,
-                "created_at": "2025-09-24 10:20:58",
-                "updated_at": "2025-09-24 10:20:58",
-                "name": "Bases de datos",
-                "description": "Diseño y gestión de BBDD relacionales.",
-                "path": "bd_daw",
-                "image": null,
-                "has_content": 0,
-                "hours": 166,
-                "acronym": "BD_DAW",
-                "cicle_year_id": 5,
-                "report_code": "BDA"
-            },
-            {
-                "id": 63,
-                "is_active": 1,
-                "created_at": "2025-09-24 10:20:58",
-                "updated_at": "2025-09-24 10:20:58",
-                "name": "Entornos de desarrollo",
-                "description": "Uso de IDE y control de versiones.",
-                "path": "ed_daw",
-                "image": null,
-                "has_content": 0,
-                "hours": 100,
-                "acronym": "ED_DAW",
-                "cicle_year_id": 5,
-                "report_code": "EDE"
-            },
-            {
-                "id": 64,
-                "is_active": 1,
-                "created_at": "2025-09-24 10:20:58",
-                "updated_at": "2025-09-24 10:20:58",
-                "name": "Sistemas informáticos",
-                "description": "Instalación de sistemas operativos y redes.",
-                "path": "si_daw",
-                "image": null,
-                "has_content": 0,
-                "hours": 166,
-                "acronym": "SI_DAW",
-                "cicle_year_id": 5,
-                "report_code": "SIN"
-            },
-            {
-                "id": 65,
-                "is_active": 1,
-                "created_at": "2025-09-24 10:20:58",
-                "updated_at": "2025-09-24 10:20:58",
-                "name": "Lenguajes de marcas",
-                "description": "HTML, XML, CSS y otras tecnologías.",
-                "path": "lm_daw",
-                "image": null,
-                "has_content": 0,
-                "hours": 100,
-                "acronym": "LM_DAW",
-                "cicle_year_id": 5,
-                "report_code": "LMSGI"
-            },
-            {
-                "id": 66,
-                "is_active": 1,
-                "created_at": "2025-09-24 10:20:58",
-                "updated_at": "2025-09-24 10:20:58",
-                "name": "Inglés profesional GS",
-                "description": "Comunicación en inglés aplicada a la informática web.",
-                "path": "ing_daw",
-                "image": null,
-                "has_content": 0,
-                "hours": 68,
-                "acronym": "ING_DAW",
-                "cicle_year_id": 5,
-                "report_code": "ING"
-            },
-            {
-                "id": 67,
-                "is_active": 1,
-                "created_at": "2025-09-24 10:20:58",
-                "updated_at": "2025-09-24 10:20:58",
-                "name": "Itinerario personal para la empleabilidad I",
-                "description": "Desarrollo de habilidades personales y empleabilidad.",
-                "path": "ipe1_daw",
-                "image": null,
-                "has_content": 0,
-                "hours": 100,
-                "acronym": "IPE1_DAW",
-                "cicle_year_id": 5,
-                "report_code": "IPE1"
-            },
-            {
-                "id": 68,
-                "is_active": 1,
-                "created_at": "2025-09-24 10:20:58",
-                "updated_at": "2025-09-24 10:20:58",
-                "name": "Proyecto intermodular DAW I",
-                "description": "Proyecto inicial de desarrollo web.",
-                "path": "pidaw1",
-                "image": null,
-                "has_content": 0,
-                "hours": 34,
-                "acronym": "PIDAW1",
-                "cicle_year_id": 5,
-                "report_code": "PI1DAW"
+            
+            didParseCell: (data) => {
+                // Aplicar colores solo a las celdas del cuerpo que contienen porcentajes
+                if (data.section === 'body') {
+                    const colIndex = data.column.index;
+                    const key = dataKeys[colIndex];
+
+                    if (key.startsWith('p_')) {
+                        const percentage = parseInt(data.cell.raw as string);
+                        if (!isNaN(percentage)) {
+                            // Obtenemos la clase de severidad (ej: bg-red-100)
+                            const severityClass = this.getSeverityClass(percentage).split(' ')[1];
+                            const colors = this.colorMap[severityClass];
+
+                            if (colors) {
+                                data.cell.styles.fillColor = colors.background;
+                                data.cell.styles.textColor = colors.color;
+                            }
+                        }
+                    }
+                }
             }
-        ]
-    }
+        });
 
-    fakeCycles(){
-        return [
-    {
-        "code": 1,
-        "name": "SMR - primero"
-    },
-    {
-        "code": 2,
-        "name": "SMR - segundo"
-    },
-    {
-        "code": 3,
-        "name": "DAM - primero"
-    },
-    {
-        "code": 4,
-        "name": "DAM - segundo"
-    },
-    {
-        "code": 5,
-        "name": "DAW - primero"
-    },
-    {
-        "code": 6,
-        "name": "DAW - segundo"
-    },
-    {
-        "code": 7,
-        "name": "ASIR - primero"
-    },
-    {
-        "code": 8,
-        "name": "ASIR - segundo"
-    },
-    {
-        "code": 9,
-        "name": "Inteligencia Artificial y Big Data"
-    },
-    {
-        "code": 10,
-        "name": "Ciberseguridad en Entornos TI"
-    },
-    {
-        "code": 11,
-        "name": "Desarrollo Videojuegos y Realidad Virtual"
+        doc.save(`Informe_Faltas_${new Date().getTime()}.pdf`);
     }
-]
-    }
-
+    
 }

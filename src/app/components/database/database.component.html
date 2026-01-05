@@ -1,4 +1,4 @@
-<div class="mt-3 mr-4 ml-4">
+<div class="mt-3 mr-4 ml-4 mb-3">
     <p-panel [toggleable]="false">
         <ng-template #header>
             <div class="flex items-center gap-2"> 
@@ -17,7 +17,6 @@
             <p-button icon="pi pi-file-plus" 
                         severity="secondary" 
                         rounded text  
-                        placeholder="Left" 
                         tooltipPosition="left" 
                         pTooltip="Añadir nuevo ciclo"
                         (click)="navigatorService.navigateNewCycle()"
@@ -25,7 +24,6 @@
             <p-button icon="pi pi-file-export" 
                         severity="secondary" 
                         rounded text  
-                        placeholder="Left" 
                         tooltipPosition="left" 
                         pTooltip="Exportar datos"
                         (click)="exportToJSON()"
@@ -34,14 +32,14 @@
             <p-button icon="pi pi-file-import" 
                         severity="secondary" 
                         rounded text  
-                        placeholder="Left" 
                         tooltipPosition="left" 
                         pTooltip="Importar datos"
+                        (click)="fileInput.click()"
                         />
+            <input type="file" #fileInput (change)="importJSON($event)" accept=".json" style="display:none" />
 
         </ng-template>
 
-        
         <div class="card">
             <p-treetable [value]="cycles" [scrollable]="true" [tableStyle]="{'min-width':'50rem'}">
                 <ng-template #header>
@@ -49,7 +47,7 @@
                         <th>Nombre del Módulo / Ciclo</th>
                         <th class="text-center">Código en el informe</th>
                         <th class="text-center">Horas</th>
-                        <th>Acciones</th>
+                        <th class="text-center">Acciones</th>
                     </tr>
                 </ng-template>
                 
@@ -73,26 +71,37 @@
                                 <span>{{ rowData.hours }} h</span>
                             }
                         </td>
-                        <td >
+                        <td class="text-center">
                             @if (rowData.type !== 'module'){
                                 <p-button icon="pi pi-file-plus"                                 
-                                    rounded text  
-                                    placeholder="Left" 
-                                    tooltipPosition="left" 
-                                    pTooltip="Añadir módulos"/>
+                                    rounded text 
+                                    pTooltip="Añadir módulos"
+                                    (click)="navigatorService.navigateNewModule(rowData.id)"/>
                                 <p-button icon="pi pi-pencil"                                 
-                                    rounded text  
-                                    placeholder="Left" 
-                                    tooltipPosition="left" 
-                                    pTooltip="Editar"
+                                    rounded text 
+                                    pTooltip="Editar Ciclo"
                                     (click)="navigatorService.navigateEditCycle(rowData.id)"/>
+                                <p-button icon="pi pi-trash"                                 
+                                    rounded text severity="danger" 
+                                    pTooltip="Eliminar Ciclo"
+                                    (click)="confirmDeleteCycle(rowData)"/>
                             }
-
+                            @else {
+                                <p-button icon="pi pi-pencil"                                 
+                                    rounded text 
+                                    pTooltip="Editar Módulo"
+                                    (click)="navigatorService.navigateEditModule(rowData.id)"/>
+                                <p-button icon="pi pi-trash"                                 
+                                    rounded text severity="danger" 
+                                    pTooltip="Eliminar Módulo"
+                                    (click)="confirmDeleteModule(rowData)"/>
+                            }
                         </td>
                     </tr>
                 </ng-template>
             </p-treetable>
         </div>
-
     </p-panel>
 </div>
+
+<p-confirmDialog />
