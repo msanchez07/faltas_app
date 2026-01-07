@@ -78,21 +78,26 @@ export class DatabaseComponent {
         }
     }
 
-    exportToJSON(fileName: string = 'datos-ciclos.json'): void {
-        // Verificamos que haya datos
+    exportToJSON(): void {
         if (!this.cycles || this.cycles.length === 0) {
             console.warn("No hay datos para exportar");
             return;
         }
 
-        // Convertimos la estructura de nodos completa (incluyendo children)
-        const blob = new Blob([JSON.stringify(this.cycles, null, 4)], { type: 'application/json' });
-        
-        // Proceso de descarga
+        // El segundo parámetro de stringify es el 'replacer'. 
+        // Filtramos las propiedades que no queremos exportar.
+        const jsonExport = JSON.stringify(this.cycles, (key, value) => {
+            if (key === 'id' || key === 'parent' || key === 'expanded') {
+                return undefined; // Elimina la propiedad del JSON resultante
+            }
+            return value;
+        }, 4);
+
+        const blob = new Blob([jsonExport], { type: 'application/json' });
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `exportacion_ciclos_${new Date().getTime()}.json`;
+        a.download = `plantilla_ciclos_${new Date().toISOString().slice(0,10)}.json`;
         a.click();
         
         window.URL.revokeObjectURL(url);

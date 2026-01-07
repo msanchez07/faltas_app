@@ -41,4 +41,10 @@ testem.log
 .DS_Store
 Thumbs.db
 
-release
+release/*.exe
+release/*.zip
+release/*.AppImage
+release/*.dmg
+
+# PERO mantener la carpeta de datos JSON
+!release/datos/

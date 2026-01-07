@@ -114,29 +114,47 @@ app.whenReady().then(() => {
   });
 
   ipcMain.handle('import-cycles-json', (event, treeData) => {
-    const insertMany = db.transaction((data) => {
-      db.prepare('DELETE FROM modules').run();
-      db.prepare('DELETE FROM cycle').run();
-      const insertCycle = db.prepare('INSERT INTO cycle (name) VALUES (?)');
-      const insertModule = db.prepare('INSERT INTO modules (name, hours, report_code, cycle_id) VALUES (?, ?, ?, ?)');
+      const insertMany = db.transaction((data) => {
+          // 1. Limpieza total de la estructura previa
+          db.prepare('DELETE FROM modules').run();
+          db.prepare('DELETE FROM cycle').run();
 
-      for (const cycleNode of data) {
-        const cycleInfo = insertCycle.run(cycleNode.data.name);
-        const newCycleId = cycleInfo.lastInsertRowid;
-        if (cycleNode.children) {
-          for (const moduleNode of cycleNode.children) {
-            const m = moduleNode.data;
-            insertModule.run(m.name, m.hours || 0, m.report_code || null, newCycleId);
+          const insertCycle = db.prepare('INSERT INTO cycle (name) VALUES (?)');
+          const insertModule = db.prepare('INSERT INTO modules (name, hours, report_code, cycle_id) VALUES (?, ?, ?, ?)');
+
+          for (const cycleNode of data) {
+              // Soporte híbrido: Si viene de un JSON limpio usa cycleNode.name, 
+              // si viene del Tree de PrimeNG usa cycleNode.data.name
+              const cycleName = cycleNode.name || (cycleNode.data && cycleNode.data.name);
+              
+              if (!cycleName) continue; // Saltar si no hay nombre válido
+
+              const cycleInfo = insertCycle.run(cycleName);
+              const newCycleId = cycleInfo.lastInsertRowid;
+
+              if (cycleNode.children && Array.isArray(cycleNode.children)) {
+                  for (const moduleNode of cycleNode.children) {
+                      // Soporte híbrido para los módulos
+                      const m = moduleNode.data ? moduleNode.data : moduleNode;
+                      
+                      insertModule.run(
+                          m.name, 
+                          m.hours || 0, 
+                          m.report_code || null, 
+                          newCycleId
+                      );
+                  }
+              }
           }
-        }
+      });
+
+      try {
+          insertMany(treeData);
+          return { success: true };
+      } catch (error) {
+          console.error("Error en importación:", error);
+          return { success: false, error: error.message };
       }
-    });
-    try {
-      insertMany(treeData);
-      return { success: true };
-    } catch (error) {
-      return { success: false, error: error.message };
-    }
   });
 
   ipcMain.handle('get-settings', () => {

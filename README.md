@@ -1,59 +1,57 @@
-# FaltasApp
+# 📊 Gestor de Faltas
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.1.6.
+**Gestor de Faltas** es una aplicación de escritorio multiplataforma diseñada para el control de asistencia en centros educativos. Permite gestionar Ciclos, Módulos y registrar faltas de asistencia calculando automáticamente los porcentajes de absentismo sobre las horas totales de cada módulo.
 
-## Development server
+> **Desarrollado por:** Manuel Sánchez Gomis  
+> **Contacto:** [me.sanchezgomis@edu.gva.es](mailto:me.sanchezgomis@edu.gva.es)
 
-To start a local development server, run:
+---
 
-```bash
-ng serve
-```
+## 📥 Descargas (Releases)
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Para empezar a utilizar la aplicación sin necesidad de compilar el código, descarga la versión correspondiente a tu sistema operativo directamente desde la carpeta de este repositorio:
 
-## Code scaffolding
+👉 **[Explorar Carpeta de Lanzamientos (Releases)](./release)**
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+| Plataforma | Formato | Instrucciones rápidas |
+| :--- | :--- | :--- |
+| **Linux** | `.AppImage` | Dar permisos de ejecución (`chmod +x`) |
+| **Windows** | `.zip` | Descomprimir y ejecutar (Versión Portable) |
+| **macOS** | `.zip` | Clic derecho -> Abrir (para saltar Gatekeeper) |
 
-```bash
-ng generate component component-name
-```
+---
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## ✨ Características Principales
 
-```bash
-ng generate --help
-```
+* **Multiplataforma**: Ejecutables optimizados para Windows, Linux y macOS.
+* **Base de Datos Local**: Tus datos no viajan a la nube; se almacenan de forma segura en tu equipo mediante SQLite.
+* **Cálculo Automático**: Control en tiempo real del límite de faltas (porcentaje configurable).
+* **Importación Masiva**: Carga toda la estructura de tu centro educativo mediante archivos JSON.
+* **Interfaz Moderna**: Desarrollada con Angular y PrimeNG para una experiencia fluida.
 
-## Building
+---
 
-To build the project run:
+## 🛠️ Instalación y Uso Detallado
 
-```bash
-ng build
-```
+Para una guía completa sobre cómo instalar, configurar y solucionar problemas, consulta nuestras guías específicas:
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+1.  [Guía de Instalación y Primeros Pasos](./docs/INSTALL.md)
+2.  [Manual de Usuario](./docs/USER_GUIDE.md)
+3.  [Guía Técnica y Mantenimiento](./docs/TECHNICAL.md)
 
-## Running unit tests
+---
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## 💻 Desarrollo y Compilación
 
-```bash
-ng test
-```
+Si deseas realizar cambios en el código o compilar la aplicación tú mismo:
 
-## Running end-to-end tests
+1.  **Instalar dependencias**: `npm install`
+2.  **Configurar entorno**: `sh setup.sh` (Crea carpetas necesarias para módulos nativos).
+3.  **Lanzar en desarrollo**: `npm run electron`
+4.  **Generar ejecutables**: `./build-apps.sh`
 
-For end-to-end (e2e) testing, run:
+---
 
-```bash
-ng e2e
-```
+## 📄 Licencia
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Este proyecto es de uso libre. Siéntete libre de clonarlo y adaptarlo a las necesidades de tu centro educativo.
