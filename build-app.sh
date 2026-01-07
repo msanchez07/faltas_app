@@ -59,7 +59,4 @@ rm release/latest-linux.yml
 rm release/latest-mac.yml
 rm "release/Gestor de Faltas-1.0.0-mac.zip.blockmap"
 
-mkdir ./release/datos
-cp -R ./datos ./release
-
 echo "✅ Proceso finalizado. Revisa la carpeta /release"

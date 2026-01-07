@@ -14,7 +14,7 @@ Antes de empezar a anotar faltas, personaliza el comportamiento de la app:
 Para facilitarte el inicio, el repositorio incluye una carpeta con estructuras de datos ya preparadas.
 
 ### Cómo usar los archivos de ejemplo:
-1. Navega a la carpeta **`release/datos/`** de este repositorio.
+1. Navega a la carpeta **`datos`** de este repositorio.
 2. Descarga el archivo `.json` que mejor se adapte a tu necesidad (ej: `informatica.json`).
 3. En la aplicación, ve a **Configuración** -> **Importar JSON**.
 4. Selecciona el archivo descargado. 

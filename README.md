@@ -11,7 +11,7 @@
 
 Para empezar a utilizar la aplicación sin necesidad de compilar el código, descarga la versión correspondiente a tu sistema operativo directamente desde la carpeta de este repositorio:
 
-👉 **[Explorar Carpeta de Lanzamientos (Releases)](./release)**
+👉 **[DESCARGAR AQUÍ LA ÚLTIMA VERSIÓN](https://github.com/msanchez07/faltas_app/releases/latest)**
 
 | Plataforma | Formato | Instrucciones rápidas |
 | :--- | :--- | :--- |
