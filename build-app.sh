@@ -50,6 +50,7 @@ npx electron-builder --mac --x64 -c.npmRebuild=false
 
 rm -R release/linux-unpacked
 rm -R release/win-unpacked
+rm -R release/mac-arm64
 rm -R release/mac
 rm -R release/.icon-icns
 rm -R release/.icon-ico
@@ -57,6 +58,7 @@ rm release/builder-debug.yml
 rm release/builder-effective-config.yaml
 rm release/latest-linux.yml
 rm release/latest-mac.yml
+rm "release/Gestor de Faltas-1.0.0-arm64-mac.zip.blockmap"
 rm "release/Gestor de Faltas-1.0.0-mac.zip.blockmap"
 
 echo "✅ Proceso finalizado. Revisa la carpeta /release"

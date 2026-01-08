@@ -1,626 +1,124 @@
 [
     {
-        "data": {
-            "name": "ASIR primero",
-            "type": "cycle"
-        },
-        "children": [
-            {
-                "data": {
-                    "name": "Fundamentos de hardware",
-                    "report_code": null,
-                    "hours": 100,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Gestión de bases de datos",
-                    "report_code": null,
-                    "hours": 166,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Implantación de sistemas operativos",
-                    "report_code": null,
-                    "hours": 233,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Lenguajes de marcas y sistemas de gestión de información",
-                    "report_code": null,
-                    "hours": 100,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Planificación y administración de redes",
-                    "report_code": null,
-                    "hours": 200,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Proyecto intermodular ASIR I",
-                    "report_code": null,
-                    "hours": 34,
-                    "type": "module"
-                }
-            }
+        "name": "ASIR primero",
+        "modulos": [
+            { "name": "Fundamentos de hardware", "hours": 100, "report_code": null },
+            { "name": "Gestión de bases de datos", "hours": 166, "report_code": null },
+            { "name": "Implantación de sistemas operativos", "hours": 233, "report_code": null },
+            { "name": "Lenguajes de marcas y sistemas de gestión de información", "hours": 100, "report_code": null },
+            { "name": "Planificación y administración de redes", "hours": 200, "report_code": null },
+            { "name": "Proyecto intermodular ASIR I", "hours": 34, "report_code": null }
         ]
     },
     {
-        "data": {
-            "name": "ASIR segundo",
-            "type": "cycle"
-        },
-        "children": [
-            {
-                "data": {
-                    "name": "Administración de sistemas gestores de bases de datos",
-                    "report_code": null,
-                    "hours": 67,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Administración de sistemas operativos",
-                    "report_code": null,
-                    "hours": 133,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Implantación de aplicaciones web",
-                    "report_code": null,
-                    "hours": 133,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Proyecto intermodular ASIR II",
-                    "report_code": null,
-                    "hours": 100,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Seguridad y alta disponibilidad",
-                    "report_code": null,
-                    "hours": 133,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Servicios de red e internet",
-                    "report_code": null,
-                    "hours": 166,
-                    "type": "module"
-                }
-            }
+        "name": "ASIR segundo",
+        "modulos": [
+            { "name": "Administración de sistemas gestores de bases de datos", "hours": 67, "report_code": null },
+            { "name": "Administración de sistemas operativos", "hours": 133, "report_code": null },
+            { "name": "Implantación de aplicaciones web", "hours": 133, "report_code": null },
+            { "name": "Proyecto intermodular ASIR II", "hours": 100, "report_code": null },
+            { "name": "Seguridad y alta disponibilidad", "hours": 133, "report_code": null },
+            { "name": "Servicios de red e internet", "hours": 166, "report_code": null }
         ]
     },
     {
-        "data": {
-            "name": "Ciberseguridad en Entornos TI",
-            "type": "cycle"
-        },
-        "children": [
-            {
-                "data": {
-                    "name": "Análisis forense",
-                    "report_code": null,
-                    "hours": 60,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Fundamentos de ciberseguridad",
-                    "report_code": null,
-                    "hours": 100,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Pentesting y auditoría",
-                    "report_code": null,
-                    "hours": 80,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Seguridad en aplicaciones",
-                    "report_code": null,
-                    "hours": 80,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Seguridad en redes",
-                    "report_code": null,
-                    "hours": 80,
-                    "type": "module"
-                }
-            }
+        "name": "Ciberseguridad en Entornos TI",
+        "modulos": [
+            { "name": "Análisis forense", "hours": 60, "report_code": null },
+            { "name": "Fundamentos de ciberseguridad", "hours": 100, "report_code": null },
+            { "name": "Pentesting y auditoría", "hours": 80, "report_code": null },
+            { "name": "Seguridad en aplicaciones", "hours": 80, "report_code": null },
+            { "name": "Seguridad en redes", "hours": 80, "report_code": null }
         ]
     },
     {
-        "data": {
-            "name": "DAM primero",
-            "type": "cycle"
-        },
-        "children": [
-            {
-                "data": {
-                    "name": "Bases de datos",
-                    "report_code": null,
-                    "hours": 166,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Entornos de desarrollo",
-                    "report_code": null,
-                    "hours": 100,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Inglés profesional GS",
-                    "report_code": null,
-                    "hours": 68,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Lenguajes de marcas",
-                    "report_code": null,
-                    "hours": 100,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Programación",
-                    "report_code": null,
-                    "hours": 266,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Proyecto intermodular DAM I",
-                    "report_code": null,
-                    "hours": 34,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Sistemas informáticos",
-                    "report_code": null,
-                    "hours": 166,
-                    "type": "module"
-                }
-            }
+        "name": "DAM primero",
+        "modulos": [
+            { "name": "Bases de datos", "hours": 166, "report_code": null },
+            { "name": "Entornos de desarrollo", "hours": 100, "report_code": null },
+            { "name": "Inglés profesional GS", "hours": 68, "report_code": null },
+            { "name": "Lenguajes de marcas", "hours": 100, "report_code": null },
+            { "name": "Programación", "hours": 266, "report_code": null },
+            { "name": "Proyecto intermodular DAM I", "hours": 34, "report_code": null },
+            { "name": "Sistemas informáticos", "hours": 166, "report_code": null }
         ]
     },
     {
-        "data": {
-            "name": "DAM segundo",
-            "type": "cycle"
-        },
-        "children": [
-            {
-                "data": {
-                    "name": "Acceso a datos",
-                    "report_code": null,
-                    "hours": 133,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Desarrollo de interfaces",
-                    "report_code": null,
-                    "hours": 166,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Digitalización aplicada al sistema productivo GS",
-                    "report_code": null,
-                    "hours": 34,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Programación multimedia y dispositivos móviles",
-                    "report_code": null,
-                    "hours": 133,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Proyecto intermodular DAM II",
-                    "report_code": null,
-                    "hours": 100,
-                    "type": "module"
-                }
-            }
+        "name": "DAM segundo",
+        "modulos": [
+            { "name": "Acceso a datos", "hours": 133, "report_code": null },
+            { "name": "Desarrollo de interfaces", "hours": 166, "report_code": null },
+            { "name": "Digitalización aplicada al sistema productivo GS", "hours": 34, "report_code": null },
+            { "name": "Programación multimedia y dispositivos móviles", "hours": 133, "report_code": null },
+            { "name": "Proyecto intermodular DAM II", "hours": 100, "report_code": null }
         ]
     },
     {
-        "data": {
-            "name": "DAW primero",
-            "type": "cycle"
-        },
-        "children": [
-            {
-                "data": {
-                    "name": "Bases de datos",
-                    "report_code": "BDA",
-                    "hours": 166,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Entornos de desarrollo",
-                    "report_code": "EDE",
-                    "hours": 100,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Inglés profesional GS",
-                    "report_code": "ING",
-                    "hours": 68,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Itinerario personal para la empleabilidad I",
-                    "report_code": "IPE1",
-                    "hours": 100,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Lenguajes de marcas",
-                    "report_code": "LMSGI",
-                    "hours": 100,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Programación",
-                    "report_code": "PRO",
-                    "hours": 266,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Proyecto intermodular DAW I",
-                    "report_code": "PI1DAW",
-                    "hours": 34,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Sistemas informáticos",
-                    "report_code": "SIN",
-                    "hours": 166,
-                    "type": "module"
-                }
-            }
+        "name": "DAW primero",
+        "modulos": [
+            { "name": "Bases de datos", "hours": 166, "report_code": "BDA" },
+            { "name": "Entornos de desarrollo", "hours": 100, "report_code": "EDE" },
+            { "name": "Inglés profesional GS", "hours": 68, "report_code": "ING" },
+            { "name": "Itinerario personal para la empleabilidad I", "hours": 100, "report_code": "IPE1" },
+            { "name": "Lenguajes de marcas", "hours": 100, "report_code": "LMSGI" },
+            { "name": "Programación", "hours": 266, "report_code": "PRO" },
+            { "name": "Proyecto intermodular DAW I", "hours": 34, "report_code": "PI1DAW" },
+            { "name": "Sistemas informáticos", "hours": 166, "report_code": "SIN" }
         ]
     },
     {
-        "data": {
-            "name": "DAW segundo",
-            "type": "cycle"
-        },
-        "children": [
-            {
-                "data": {
-                    "name": "Desarrollo web en entorno cliente",
-                    "report_code": null,
-                    "hours": 200,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Desarrollo web en entorno servidor",
-                    "report_code": null,
-                    "hours": 200,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Despliegue de aplicaciones web",
-                    "report_code": null,
-                    "hours": 100,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Diseño de interfaces web",
-                    "report_code": null,
-                    "hours": 133,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Proyecto intermodular DAW II",
-                    "report_code": null,
-                    "hours": 99,
-                    "type": "module"
-                }
-            }
+        "name": "DAW segundo",
+        "modulos": [
+            { "name": "Desarrollo web en entorno cliente", "hours": 200, "report_code": null },
+            { "name": "Desarrollo web en entorno servidor", "hours": 200, "report_code": null },
+            { "name": "Despliegue de aplicaciones web", "hours": 100, "report_code": null },
+            { "name": "Diseño de interfaces web", "hours": 133, "report_code": null },
+            { "name": "Proyecto intermodular DAW II", "hours": 99, "report_code": null }
         ]
     },
     {
-        "data": {
-            "name": "Desarrollo Videojuegos y Realidad Virtual",
-            "type": "cycle"
-        },
-        "children": [
-            {
-                "data": {
-                    "name": "Diseño de niveles y narrativa",
-                    "report_code": null,
-                    "hours": 80,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Fundamentos de videojuegos",
-                    "report_code": null,
-                    "hours": 100,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Gráficos 3D y realidad virtual",
-                    "report_code": null,
-                    "hours": 100,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Programación de videojuegos",
-                    "report_code": null,
-                    "hours": 120,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Proyecto videojuegos",
-                    "report_code": null,
-                    "hours": 60,
-                    "type": "module"
-                }
-            }
+        "name": "Desarrollo Videojuegos y Realidad Virtual",
+        "modulos": [
+            { "name": "Diseño de niveles y narrativa", "hours": 80, "report_code": null },
+            { "name": "Fundamentos de videojuegos", "hours": 100, "report_code": null },
+            { "name": "Gráficos 3D y realidad virtual", "hours": 100, "report_code": null },
+            { "name": "Programación de videojuegos", "hours": 120, "report_code": null },
+            { "name": "Proyecto videojuegos", "hours": 60, "report_code": null }
         ]
     },
     {
-        "data": {
-            "name": "Inteligencia Artificial y Big Data",
-            "type": "cycle"
-        },
-        "children": [
-            {
-                "data": {
-                    "name": "Big data aplicado",
-                    "report_code": null,
-                    "hours": 80,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Modelos de inteligencia artificial",
-                    "report_code": null,
-                    "hours": 120,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Programación de inteligencia artificial",
-                    "report_code": null,
-                    "hours": 100,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Sistemas de aprendizaje automático",
-                    "report_code": null,
-                    "hours": 100,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Sistemas de big data",
-                    "report_code": null,
-                    "hours": 80,
-                    "type": "module"
-                }
-            }
+        "name": "Inteligencia Artificial y Big Data",
+        "modulos": [
+            { "name": "Big data aplicado", "hours": 80, "report_code": null },
+            { "name": "Modelos de inteligencia artificial", "hours": 120, "report_code": null },
+            { "name": "Programación de inteligencia artificial", "hours": 100, "report_code": null },
+            { "name": "Sistemas de aprendizaje automático", "hours": 100, "report_code": null },
+            { "name": "Sistemas de big data", "hours": 80, "report_code": null }
         ]
     },
     {
-        "data": {
-            "name": "SMR primero",
-            "type": "cycle"
-        },
-        "children": [
-            {
-                "data": {
-                    "name": "Aplicaciones ofimáticas",
-                    "report_code": null,
-                    "hours": 233,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Inglés profesional",
-                    "report_code": null,
-                    "hours": 68,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Itinerario personal para la empleabilidad I",
-                    "report_code": null,
-                    "hours": 100,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Montaje y mantenimiento de equipos",
-                    "report_code": null,
-                    "hours": 233,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Redes locales",
-                    "report_code": null,
-                    "hours": 233,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Sistemas operativos monopuesto",
-                    "report_code": null,
-                    "hours": 133,
-                    "type": "module"
-                }
-            }
+        "name": "SMR primero",
+        "modulos": [
+            { "name": "Aplicaciones ofimáticas", "hours": 233, "report_code": null },
+            { "name": "Inglés profesional", "hours": 68, "report_code": null },
+            { "name": "Itinerario personal para la empleabilidad I", "hours": 100, "report_code": null },
+            { "name": "Montaje y mantenimiento de equipos", "hours": 233, "report_code": null },
+            { "name": "Redes locales", "hours": 233, "report_code": null },
+            { "name": "Sistemas operativos monopuesto", "hours": 133, "report_code": null }
         ]
     },
     {
-        "data": {
-            "name": "SMR segundo",
-            "type": "cycle"
-        },
-        "children": [
-            {
-                "data": {
-                    "name": "Aplicaciones web",
-                    "report_code": null,
-                    "hours": 100,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Digitalización aplicada al sistema productivo",
-                    "report_code": null,
-                    "hours": 34,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Itinerario personal para la empleabilidad II",
-                    "report_code": null,
-                    "hours": 100,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Módulo optativo",
-                    "report_code": null,
-                    "hours": 100,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Proyecto intermodular",
-                    "report_code": null,
-                    "hours": 66,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Seguridad informática",
-                    "report_code": null,
-                    "hours": 133,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Servicios en red",
-                    "report_code": null,
-                    "hours": 233,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Sistemas operativos en red",
-                    "report_code": null,
-                    "hours": 200,
-                    "type": "module"
-                }
-            },
-            {
-                "data": {
-                    "name": "Sostenibilidad aplicada al sistema productivo",
-                    "report_code": null,
-                    "hours": 34,
-                    "type": "module"
-                }
-            }
+        "name": "SMR segundo",
+        "modulos": [
+            { "name": "Aplicaciones web", "hours": 100, "report_code": null },
+            { "name": "Digitalización aplicada al sistema productivo", "hours": 34, "report_code": null },
+            { "name": "Itinerario personal para la empleabilidad II", "hours": 100, "report_code": null },
+            { "name": "Módulo optativo", "hours": 100, "report_code": null },
+            { "name": "Proyecto intermodular", "hours": 66, "report_code": null },
+            { "name": "Seguridad informática", "hours": 133, "report_code": null },
+            { "name": "Servicios en red", "hours": 233, "report_code": null },
+            { "name": "Sistemas operativos en red", "hours": 200, "report_code": null },
+            { "name": "Sostenibilidad aplicada al sistema productivo", "hours": 34, "report_code": null }
         ]
     }
 ]

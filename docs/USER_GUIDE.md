@@ -42,10 +42,10 @@ Esta opción es la más rápida si quieres configurar toda tu familia profesiona
 #### 1. Conceptos Básicos: ¿Qué es este archivo?
 No te asustes por el formato. Imagina que este archivo es una serie de **Cajas (Ciclos)** y dentro de cada caja metemos **Papeles (Módulos/Asignaturas)**.
 
-Para que la aplicación funcione, cada asignatura necesita tres datos:
-1.  **Nombre**: Como la llamamos nosotros.
-2.  **Horas**: Duración total del curso.
-3.  **Código Oficial (report_code)**: Es el código corto que aparece en los PDFs de faltas de Conselleria (ITACA). **Es vital para que la App se entienda con los documentos oficiales.**
+Para que la aplicación funcione, cada asignatura necesita tres datos clave:
+1.  **Nombre**: El nombre descriptivo de la asignatura.
+2.  **Horas**: Duración total del curso (necesario para calcular el %).
+3.  **Código Oficial (report_code)**: Es el código corto que aparece en los PDFs de faltas de Conselleria (ITACA). **Es vital para que la App vincule correctamente los datos del informe.**
 
 #### 2. Pasos para crear tu propia familia profesional
 Sigue estos pasos para crear tu archivo personalizado:
@@ -53,12 +53,14 @@ Sigue estos pasos para crear tu archivo personalizado:
 1.  **Consigue la plantilla**: Ve a la carpeta `/release/datos/` y haz una copia del archivo `plantilla_vacia.json`.
 2.  **Abre el editor**: Haz clic derecho sobre tu copia y elige **"Abrir con..." -> Bloc de Notas** (Windows) o **TextEdit** (Mac).
 3.  **El "Bloque de Construcción"**:
-    Copia y pega este bloque para cada ciclo. Rellénalo con los datos que tienes en tu informe de matrícula o faltas:
+    Copia y pega este bloque para cada ciclo. Rellénalo con los nombres y horas reales:
+
+
 
 ```json
 {
   "name": "NOMBRE DEL CICLO (Ej: 1º Cocina)",
-  "children": [
+  "modulos": [
     { 
       "name": "Nombre Asignatura 1", 
       "hours": 100, 
@@ -74,24 +76,24 @@ Sigue estos pasos para crear tu archivo personalizado:
 ```
 
 #### 3. Las Reglas de Oro (Para evitar errores)
-El ordenador es estricto. Para que todo funcione, respeta estas reglas:
+El ordenador es muy estricto con la sintaxis. Para que la importación no falle, respeta estas reglas:
 
 * **Regla 1: El Código Oficial (`report_code`)**: 
-    * Debes copiarlo **exactamente igual** que aparece en el PDF de faltas de tus alumnos (columna Módulo/UF). Si en el PDF pone `MP0132`, aquí debes poner `"MP0132"`.
-* **Regla 2: Las Comillas `" "`**: Todo texto debe ir entre comillas.
-    * *Bien*: `"report_code": "MP03"`
-* **Regla 3: Los Dos Puntos `:`**: Separan el nombre del valor.
+    Copia el código **exactamente igual** a como aparece en el PDF de ITACA. Si no lo necesitas para importar faltas externas, puedes dejarlo como `null` (sin comillas).
+* **Regla 2: Sin "Data" ni "Type"**: 
+    En esta nueva versión simplificada, no es necesario indicar si es "cycle" o "module". La App lo deduce por la posición en la lista.
+* **Regla 3: Las Comillas `" "`**: Todo texto debe ir entre comillas dobles. Los números (horas) van sin ellas.
 * **Regla 4: La Coma Traicionera `,`**:
-    * Pon coma al final de cada línea para seguir escribiendo, **excepto** en la última línea antes de cerrar la llave `}`.
+    Pon una coma al final de cada objeto para separarlo del siguiente, **excepto** en el último de la lista.
 
 #### 4. Ejemplo Práctico (Familia de Sanidad)
-Si quisieras crear el ciclo de **Auxiliar de Enfermería**, tu archivo debería quedar así. Fíjate en los códigos inventados (OAD, TBE...) que simulan los del PDF oficial:
+Si quisieras crear el ciclo de **Auxiliar de Enfermería**, tu archivo debería quedar así. Observa la limpieza del nuevo formato:
 
 ```json
 [
   {
     "name": "Cuidados Auxiliares de Enfermería",
-    "children": [
+    "modulos": [
       { 
         "name": "Operaciones administrativas y documentación sanitaria", 
         "hours": 65, 

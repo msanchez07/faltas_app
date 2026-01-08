@@ -84,22 +84,22 @@ export class DatabaseComponent {
             return;
         }
 
-        // El segundo parámetro de stringify es el 'replacer'. 
-        // Filtramos las propiedades que no queremos exportar.
-        const jsonExport = JSON.stringify(this.cycles, (key, value) => {
-            if (key === 'id' || key === 'parent' || key === 'expanded') {
-                return undefined; // Elimina la propiedad del JSON resultante
-            }
-            return value;
-        }, 4);
+        // Transformamos la estructura compleja de PrimeNG a la estructura limpia
+        const cleanData = this.cycles.map(node => ({
+            name: node.data.name,
+            modulos: (node.children || []).map(child => ({
+                name: child.data.name,
+                hours: child.data.hours,
+                report_code: child.data.report_code || null
+            }))
+        }));
 
-        const blob = new Blob([jsonExport], { type: 'application/json' });
+        const blob = new Blob([JSON.stringify(cleanData, null, 4)], { type: 'application/json' });
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `plantilla_ciclos_${new Date().toISOString().slice(0,10)}.json`;
+        a.download = `plantilla_ciclos_${new Date().toISOString().slice(0, 10)}.json`;
         a.click();
-        
         window.URL.revokeObjectURL(url);
     }
 

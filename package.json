@@ -19,11 +19,12 @@
     "build:all": "npm run build && electron-builder --win --linux --mac -c.npmRebuild=false"
   },
   "build": {
-    "appId": "com.tuusuario.faltasapp",
+    "appId": "com.mesanchez.faltasapp",
     "productName": "Gestor de Faltas",
     "asar": true,
     "asarUnpack": [
-      "**/node_modules/better-sqlite3/**/*"
+      "**/node_modules/better-sqlite3/**/*",
+      "**/node_modules/@napi-rs/canvas/**/*"
     ],
     "directories": {
       "output": "release"
@@ -34,23 +35,42 @@
       "preload.js",
       "database/**/*",
       "node_modules/**/*",
-      "!node_modules/@napi-rs/canvas-android-**",
-      "!node_modules/@napi-rs/canvas-darwin-**",
-      "!node_modules/@napi-rs/canvas-win32-**"
+      "!node_modules/@napi-rs/canvas-android-**"
     ],
     "win": {
       "target": ["portable"],
-      "icon": "public/favicon.png"
+      "icon": "public/favicon.png",
+      "files": [
+        "!node_modules/@napi-rs/canvas-darwin-**",
+        "!node_modules/@napi-rs/canvas-linux-**"
+      ]
     },
     "linux": {
       "target": ["AppImage"],
       "icon": "public/favicon.png",
-      "executableArgs": ["--no-sandbox"]
+      "executableArgs": ["--no-sandbox"],
+      "files": [
+        "!node_modules/@napi-rs/canvas-win32-**",
+        "!node_modules/@napi-rs/canvas-darwin-**"
+      ]
     },
     "mac": {
-      "target": ["zip"],
-      "icon": "public/favicon.png"
-      
+      "target": [
+        {
+          "target": "zip",
+          "arch": [
+            "arm64",
+            "x64"
+          ]
+        }
+      ],
+      "icon": "public/favicon.png",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "files": [
+        "!node_modules/@napi-rs/canvas-win32-**",
+        "!node_modules/@napi-rs/canvas-linux-**"
+      ]
     }
   },
   "prettier": {

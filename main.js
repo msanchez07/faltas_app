@@ -113,46 +113,48 @@ app.whenReady().then(() => {
     return { success: result.changes > 0 };
   });
 
-  ipcMain.handle('import-cycles-json', (event, treeData) => {
-      const insertMany = db.transaction((data) => {
-          // 1. Limpieza total de la estructura previa
+  ipcMain.handle('import-cycles-json', (event, jsonData) => {
+      const insertMany = db.transaction((cyclesList) => {
+          // 1. Limpieza total
           db.prepare('DELETE FROM modules').run();
           db.prepare('DELETE FROM cycle').run();
 
           const insertCycle = db.prepare('INSERT INTO cycle (name) VALUES (?)');
           const insertModule = db.prepare('INSERT INTO modules (name, hours, report_code, cycle_id) VALUES (?, ?, ?, ?)');
 
-          for (const cycleNode of data) {
-              // Soporte híbrido: Si viene de un JSON limpio usa cycleNode.name, 
-              // si viene del Tree de PrimeNG usa cycleNode.data.name
-              const cycleName = cycleNode.name || (cycleNode.data && cycleNode.data.name);
-              
-              if (!cycleName) continue; // Saltar si no hay nombre válido
+          for (const cycle of cyclesList) {
+              // Ahora leemos directamente 'cycle.name' (Formato Limpio)
+              // O 'cycle.data.name' (Por si intentan importar un JSON antiguo/raw)
+              const cycleName = cycle.name || (cycle.data && cycle.data.name);
 
-              const cycleInfo = insertCycle.run(cycleName);
-              const newCycleId = cycleInfo.lastInsertRowid;
+              if (!cycleName) continue;
 
-              if (cycleNode.children && Array.isArray(cycleNode.children)) {
-                  for (const moduleNode of cycleNode.children) {
-                      // Soporte híbrido para los módulos
-                      const m = moduleNode.data ? moduleNode.data : moduleNode;
-                      
-                      insertModule.run(
-                          m.name, 
-                          m.hours || 0, 
-                          m.report_code || null, 
-                          newCycleId
-                      );
+              const info = insertCycle.run(cycleName);
+              const newCycleId = info.lastInsertRowid;
+
+              // Buscamos 'modulos' (nuevo formato) o 'children' (formato antiguo)
+              const modulesList = cycle.modulos || cycle.children;
+
+              if (modulesList && Array.isArray(modulesList)) {
+                  for (const mod of modulesList) {
+                      // Soporte híbrido: Nuevo formato directo vs Viejo formato con .data
+                      const mName = mod.name || (mod.data && mod.data.name);
+                      const mHours = mod.hours || (mod.data && mod.data.hours) || 0;
+                      const mCode = mod.report_code || (mod.data && mod.data.report_code) || null;
+
+                      if (mName) {
+                          insertModule.run(mName, mHours, mCode, newCycleId);
+                      }
                   }
               }
           }
       });
 
       try {
-          insertMany(treeData);
+          insertMany(jsonData);
           return { success: true };
       } catch (error) {
-          console.error("Error en importación:", error);
+          console.error("Error importando JSON:", error);
           return { success: false, error: error.message };
       }
   });

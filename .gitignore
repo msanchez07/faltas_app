@@ -47,4 +47,4 @@ release/*.AppImage
 release/*.dmg
 
 # PERO mantener la carpeta de datos JSON
-!release/datos/
+release
