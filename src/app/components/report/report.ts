@@ -176,6 +176,7 @@ export class ReportComponent {
         const columnsToRemove = ['name', 'TU01CF'];
         const allKeys = Object.keys(rowData);
 
+        // 1. Filtrar y preparar las columnas (esto faltaba en tu snippet)
         const baseCols = allKeys.filter(key =>
             !columnsToRemove.includes(key) && !key.startsWith('p_')
         );
@@ -190,68 +191,67 @@ export class ReportComponent {
 
             const percentColKey = `p_${baseCol}`;
             if (percentCols.includes(percentColKey)) {
-            finalHeaders.push(`% ${baseCol}`);
-            orderedDataKeys.push(percentColKey);
+                finalHeaders.push(`% ${baseCol}`);
+                orderedDataKeys.push(percentColKey);
             }
         });
 
-        // --- TABLA con atributos antiguos (compatibilidad máxima) ---
+        // 2. Construcción de la tabla HTML
         let htmlTable = `<table border="1" cellpadding="5" cellspacing="0" style="border-collapse:collapse; font-family:sans-serif; font-size:14px; width:100%;">`;
-
-        // Cabecera con bgcolor fijo gris claro
+        
+        // Cabecera
         htmlTable += `<thead><tr>`;
         finalHeaders.forEach(h => {
-            htmlTable += `<th bgcolor="#f3f4f6" style="border:1px solid #d1d5db; font-weight:bold; text-align:left;">${this.escapeHtml(String(h))}</th>`;
+            htmlTable += `<th style="background-color:#f3f4f6; border:1px solid #d1d5db; font-weight:bold; text-align:left; padding:8px;">${this.escapeHtml(String(h))}</th>`;
         });
-        htmlTable += `</tr></thead>`;
+        htmlTable += `</tr></thead><tbody><tr>`;
 
         // Cuerpo
-        htmlTable += `<tbody><tr>`;
         orderedDataKeys.forEach(key => {
             let raw = rowData[key];
             let display = raw;
-            let bgcolorAttr = '';
-            let fontOpen = '';
-            let fontClose = '';
+            let cellStyle = "border:1px solid #d1d5db; padding:8px; text-align:left;";
 
             if (key.startsWith('p_')) {
-            const percentage = Number(raw) || 0;
-            const severityClass = this.getSeverityClass(percentage).split(' ')[0]; 
-            const colors = this.colorMap[severityClass] || { background: '', color: '' };
+                const percentage = Number(raw) || 0;
+                // 1. Obtenemos el string largo: 'text-center bg-red-100 text-red-800'
+                const fullClassString = this.getSeverityClass(percentage);
+                
+                // 2. Buscamos cuál de tus claves ('bg-red-100', etc.) está dentro de ese string
+                const colorKey = Object.keys(this.colorMap).find(cls => fullClassString.includes(cls));
 
-            if (colors.background) bgcolorAttr = `bgcolor="${colors.background}"`;
-            if (colors.color) {
-                fontOpen = `<font color="${colors.color}">`;
-                fontClose = `</font>`;
-            }
-            display = `${percentage}%`;
+                if (colorKey) {
+                    const colors = this.colorMap[colorKey];
+                    // 3. Aplicamos los Hexadecimales que ya tienes en el mapa
+                    cellStyle += `background-color: ${colors.background} !important; color: ${colors.color} !important;`;
+                }
+                display = `${percentage}%`;
             }
 
-            htmlTable += `<td ${bgcolorAttr} style="border:1px solid #d1d5db;">${fontOpen}${this.escapeHtml(String(display))}${fontClose}</td>`;
+            htmlTable += `<td style="${cellStyle}">${this.escapeHtml(String(display))}</td>`;
         });
+        
         htmlTable += `</tr></tbody></table>`;
 
-        // --- Copiar al portapapeles ---
-        try {
-            if (navigator.clipboard && (window as any).ClipboardItem) {
-            await navigator.clipboard.write([
-                new (window as any).ClipboardItem({
-                'text/html': new Blob([htmlTable], { type: 'text/html' }),
-                'text/plain': new Blob([this.htmlToPlainText(htmlTable)], { type: 'text/plain' })
-                })
-            ]);
-            //this.messages.showConfirmation('Fila copiada al portapapeles (HTML)');
-            } else {
-            //this.messages.showError('El navegador no soporta la API moderna del portapapeles');
-            }
-        } catch (err) {
-            console.error('Error al copiar HTML:', err);
-            //this.messages.showError('No se pudo copiar. Revisa permisos del navegador.');
+        // 3. Texto plano para aplicaciones que no aceptan HTML
+        const plainText = this.htmlToPlainText(htmlTable);
+
+        // 4. EL PUENTE (Verifica que el preload esté cargado)
+        if ((window as any).electronAPI) {
+            console.log('Solicitando copia al proceso principal...');
+            (window as any).electronAPI.copyHtml(htmlTable, plainText)
+                .then((result: any) => {
+                    if (result.success) {
+                        console.log('¡Copiado con éxito desde el Main Process!');
+                    } else {
+                        console.error('Error en el Main Process:', result.error);
+                    }
+                });
         }
-        }
+    }
 
         // Helpers
-        private escapeHtml(str: string) {
+    private escapeHtml(str: string) {
         return str
             .replace(/&/g, '&amp;')
             .replace(/</g, '&lt;')
@@ -264,7 +264,7 @@ export class ReportComponent {
         const tmp = document.createElement('div');
         tmp.innerHTML = html;
         return tmp.innerText || tmp.textContent || '';
-    }
+        }
 
     navigateToDatabase(){
         this.navigator.navigateDatabase();

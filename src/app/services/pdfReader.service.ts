@@ -83,7 +83,17 @@ export class PdfReaderService {
 
         for(let i = startPosition; i<endPosition; i++){
             const item = items[i];
-            if('str' in item && item.str.length >= 3){
+            // Validamos: 
+            // 1. Que exista 'str'
+            // 2. Que sea un string (typeof)
+            // 3. Que tenga longitud >= 3
+            // 4. Que contenga al menos una letra (Regex)
+            if (
+                'str' in item && 
+                typeof item.str === 'string' && 
+                item.str.length >= 3 && 
+                /[a-zA-Z]/.test(item.str)
+            ){
                 modules[(items[i+4] as any).transform[5]] = item.str;
                 if(justify)
                     modules[(items[i+6] as any).transform[5]] = item.str;                  

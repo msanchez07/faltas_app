@@ -25,3 +25,10 @@ contextBridge.exposeInMainWorld('dbApi', {
     getSettings: () => ipcRenderer.invoke('get-settings'),
     saveSettings: (settings) => ipcRenderer.invoke('save-settings', settings),
 });
+
+contextBridge.exposeInMainWorld('electronAPI', { 
+    copyHtml: (html, plainText) => { 
+        // Enviamos los datos al proceso principal para que él use el clipboard
+        return ipcRenderer.invoke('copy-to-clipboard', { html, text: plainText });
+    } 
+});

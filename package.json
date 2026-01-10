@@ -13,10 +13,11 @@
     "electron": "npm run build && electron .",
     "package": "electron-builder -c.npmRebuild=false",
 
+    "rebuild:mac": "npx @electron/rebuild -f -w better-sqlite3",
     "build:linux": "npm run build && electron-builder --linux --x64 -c.npmRebuild=false",
     "build:win": "npm run build && electron-builder --win --x64 -c.npmRebuild=false",
-    "build:mac": "npm run build && electron-builder --mac --x64 -c.npmRebuild=false",
-    "build:all": "npm run build && electron-builder --win --linux --mac -c.npmRebuild=false"
+    "build:mac": "npm run build && npm run rebuild:mac && electron-builder --mac",
+    "build:all": "npm run build && electron-builder --win --linux --mac"
   },
   "build": {
     "appId": "com.mesanchez.faltasapp",

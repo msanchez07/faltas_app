@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, Menu } = require('electron');
+const { app, BrowserWindow, ipcMain, Menu, clipboard } = require('electron');
 const path = require('path');
 const fs = require('fs'); // Añadido fs que faltaba
 const Database = require('better-sqlite3');
@@ -28,7 +28,7 @@ function createWindow() {
   });
 
   // Puedes comentar esto para producción
-  // win.webContents.openDevTools();
+  //win.webContents.openDevTools();
 }
 
 app.whenReady().then(() => {
@@ -179,7 +179,29 @@ app.whenReady().then(() => {
   // 3. Ventana y Menú
   Menu.setApplicationMenu(null);
   createWindow();
+
+  ipcMain.handle('copy-to-clipboard', (event, { html, text }) => {
+    try {
+        // En Linux, evita envoltorios complejos si no son necesarios, 
+        // pero asegura que el CSS sea totalmente inline.
+        const cleanHtml = `
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+            ${html}
+        `.trim();
+
+        clipboard.write({
+            html: cleanHtml,
+            text: text
+        });
+        
+        return { success: true };
+    } catch (error) {
+        console.error('Error en el portapapeles de Linux:', error);
+        return { success: false };
+    }
+  });
 });
+
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
