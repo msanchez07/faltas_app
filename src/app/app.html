@@ -1,1 +1,36 @@
-<router-outlet />
+<div class="flex flex-column h-screen bg-gray-50">
+  
+  <header class="flex align-items-center justify-content-between px-4 py-3 bg-primary shadow-2 z-5">
+    
+    <div class="flex align-items-center gap-3">
+      <div class="bg-white-alpha-20 border-round p-2 flex align-items-center justify-content-center">
+        <i class="pi pi-book text-white text-2xl"></i>
+      </div>
+      <div>
+        <h1 class="m-0 text-white text-xl font-semibold tracking-tight">Gestor de Faltas</h1>
+        <small class="text-white-alpha-70">Control de Asistencia</small>
+      </div>
+    </div>
+
+    <div class="flex flex-column align-items-end gap-1">
+      <div class="flex align-items-center gap-2 text-white">
+        <i class="pi pi-user text-xs text-white-alpha-70"></i>
+        <span class="text-sm font-medium">Manuel Sánchez Gomis</span>
+      </div>
+      
+      <div class="flex align-items-center gap-2">
+        <i class="pi pi-envelope text-xs text-white-alpha-70"></i>
+        <a href="mailto:me.sanchezgomis@edu.gva.es" 
+           class="text-xs text-white-alpha-90 no-underline hover:text-white hover:underline">
+          me.sanchezgomis@edu.gva.es
+        </a>
+      </div>
+    </div>
+
+  </header>
+
+  <main class="flex-grow-1 overflow-auto p-3">
+    <router-outlet></router-outlet>
+  </main>
+
+</div>

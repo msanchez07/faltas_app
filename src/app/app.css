@@ -1,0 +1,13 @@
+header h1 {
+    letter-spacing: -0.5px;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+}
+
+/* Efecto de scroll suave para el contenido principal */
+main::-webkit-scrollbar {
+    width: 8px;
+}
+main::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
